@@ -28,7 +28,7 @@ const generateAuthTokens = async (user) => {
 };
 
 const getUserToken = async (userId) => Token.findOne({ user: userId });
-const deleteUserToken = async (userId) => Token.findOneAndDelete({ user: userId });
+const deleteUserToken = async (userId) => Token.deleteMany({ user: userId });
 
 module.exports = {
   createToken,

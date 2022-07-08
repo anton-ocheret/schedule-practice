@@ -4,6 +4,7 @@ const environment = require('../config/environment');
 const docsRoutes = require('./docs-routes');
 const authRoutes = require('./auth-routes');
 const usersRoutes = require('./users-routes');
+const practicesRoutes = require('./practices-routes');
 
 const router = express.Router();
 
@@ -23,6 +24,10 @@ const appRoutes = [
   {
     path: '/users',
     routes: usersRoutes,
+  },
+  {
+    path: '/practices',
+    routes: practicesRoutes,
   },
 ];
 

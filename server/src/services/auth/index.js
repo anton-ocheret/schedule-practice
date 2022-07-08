@@ -10,7 +10,7 @@ const register = async (requestBody) => {
 };
 
 const login = async (email, password) => {
-  const data = { user: null, tokens: null, authentificated: false };
+  const data = { user: null, tokens: null };
   const user = await usersService.getUserByEmail(email);
   const isPasswordValid = user && await usersService.verifyPassword({
     password,
@@ -18,15 +18,9 @@ const login = async (email, password) => {
   });
 
   if (isPasswordValid) {
-    const authToken = await tokensService.getUserToken(user);
-
-    if (authToken) {
-      data.authentificated = true;
-    } else {
-      data.user = user;
-      data.tokens = await tokensService.generateAuthTokens(user);
-      await tokensService.createToken(data.tokens.refresh, user.id);
-    }
+    data.user = user;
+    data.tokens = await tokensService.generateAuthTokens(user);
+    await tokensService.createToken(data.tokens.refresh, user.id);
   }
 
   return data;

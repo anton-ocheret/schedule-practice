@@ -16,8 +16,7 @@ const register = catchAsync(async (request, response) => {
 
 const login = catchAsync(async (request, response) => {
   const { email, password } = request.body;
-  const { user, tokens, authentificated } = await authService.login(email, password);
-  if (authentificated) throw new ApiError(BAD_REQUEST, 'User has already authentificated');
+  const { user, tokens } = await authService.login(email, password);
   if (!user) throw new ApiError(BAD_REQUEST, 'Login or Password is incorrect');
   response.status(OK).send({ user, tokens });
 });

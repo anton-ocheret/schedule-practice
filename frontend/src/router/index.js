@@ -1,7 +1,12 @@
 import { route } from 'quasar/wrappers';
 import {
-  createRouter, createMemoryHistory, createWebHistory, createWebHashHistory,
+  createRouter,
+  createMemoryHistory,
+  createWebHistory,
+  createWebHashHistory,
 } from 'vue-router';
+import { getIsAuthorized } from 'src/api/auth';
+import { routeNames } from 'src/constants';
 import routes from './routes';
 
 /*
@@ -26,6 +31,19 @@ export default route((/* { store, ssrContext } */) => {
     // quasar.conf.js -> build -> vueRouterMode
     // quasar.conf.js -> build -> publicPath
     history: createHistory(process.env.VUE_ROUTER_BASE),
+  });
+
+  Router.beforeEach((to, _, next) => {
+    const { isPublic = false } = to.meta;
+    const authorized = getIsAuthorized();
+
+    if (!isPublic && !authorized) {
+      next({ name: routeNames.login });
+    } else if (isPublic && authorized) {
+      next({ name: routeNames.schedule });
+    } else {
+      next();
+    }
   });
 
   return Router;

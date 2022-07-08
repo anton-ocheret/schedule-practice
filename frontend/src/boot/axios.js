@@ -1,24 +1,55 @@
 import { boot } from 'quasar/wrappers';
 import axios from 'axios';
+import { Notify } from 'quasar';
+import { endpoints } from 'src/constants';
+import { getTokens, setAuth } from 'src/api/auth';
 
-// Be careful when using SSR for cross-request state pollution
-// due to creating a Singleton instance here;
-// If any client changes this (global) instance, it might be a
-// good idea to move this instance creation inside of the
-// "export default () => {}" function below (which runs individually
-// for each client)
-const api = axios.create({ baseURL: 'https://api.example.com' });
+const configureRequest = (config) => {
+  const { url } = config;
+  const isLoginRequest = url === endpoints.login;
+  if (!isLoginRequest) {
+    const { access } = getTokens();
+    config.headers.Authorization = `Bearer ${access}`;
+  }
 
-export default boot(({ app }) => {
-  // for use inside Vue files (Options API) through this.$axios and this.$api
+  return config;
+};
 
-  app.config.globalProperties.$axios = axios;
-  // ^ ^ ^ this will allow you to use this.$axios (for Vue Options API form)
-  //       so you won't necessarily have to import axios in each vue file
+const handleSuccess = (response) => {
+  if (response.data.tokens) {
+    setAuth(response.data);
+  }
 
-  app.config.globalProperties.$api = api;
-  // ^ ^ ^ this will allow you to use this.$api (for Vue Options API form)
-  //       so you can easily perform requests against your app's API
+  return Promise.resolve(response);
+};
+
+const handleError = (error) => {
+  const { status } = error.response;
+  const { errorMessages } = error.response.config;
+
+  if (Object.keys(errorMessages).length) {
+    Notify.create({
+      progress: true,
+      message: errorMessages[status],
+      color: 'negative',
+      icon: 'report_problem',
+      position: 'bottom-right',
+    });
+  }
+  return Promise.reject(error);
+};
+
+const http = axios.create({
+  baseURL: process.env.VITE_API_URL,
+  errorMessages: {},
 });
 
-export { api };
+http.interceptors.request.use(configureRequest);
+http.interceptors.response.use(handleSuccess, handleError);
+
+export default boot(({ app }) => {
+  app.config.globalProperties.$axios = axios;
+  app.config.globalProperties.$http = http;
+});
+
+export { http };

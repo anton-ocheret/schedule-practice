@@ -128,11 +128,14 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 import {
   defineComponent,
   ref,
   computed,
   watch,
+  onMounted,
 } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { allPass } from 'ramda';
@@ -315,6 +318,10 @@ export default defineComponent({
         timeFinish.value = '';
       }
     }
+
+    onMounted(() => {
+      axios.get('http://localhost:3000/v1/practices').then((response) => console.log(response));
+    });
 
     return {
       t,

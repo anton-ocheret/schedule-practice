@@ -1,5 +1,4 @@
 const Joi = require('joi');
-const { without } = require('ramda');
 const roles = require('../config/roles');
 const { getIsObjectId } = require('./custom-validations');
 
@@ -8,7 +7,8 @@ const register = {
     name: Joi.string().required(),
     email: Joi.string().required().email(),
     password: Joi.string().required(),
-    role: Joi.string().valid(...without(roles.admin.id, Object.keys(roles))).required(),
+    color: Joi.string(),
+    role: Joi.string().valid(...Object.keys(roles)).default(roles.student.id),
   }),
 };
 

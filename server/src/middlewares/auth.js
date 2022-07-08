@@ -1,8 +1,7 @@
 const passport = require('passport');
 const httpStatus = require('http-status');
-const { hasPath, omit } = require('ramda');
+const { hasPath } = require('ramda');
 const ApiError = require('../utils/api-error');
-
 
 // Example
 const getUsers = function (req, next) {

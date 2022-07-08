@@ -28,6 +28,9 @@ const userSchema = mongoose.Schema({
     enum: Object.keys(roles),
     default: roles.student.id,
   },
+  color: {
+    type: String,
+  },
   isEmailVerified: {
     type: Boolean,
     default: false,

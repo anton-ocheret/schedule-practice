@@ -3,6 +3,7 @@ const environment = require('./environment');
 const models = {
   user: 'User',
   token: 'Token',
+  practice: 'Practice',
 };
 
 const roleNames = {

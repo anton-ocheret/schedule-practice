@@ -1,3 +1,6 @@
+import isEmail from 'validator/lib/isEmail';
+import isEmpty from 'validator/lib/isEmpty';
+
 import {
   format as dateFnsFormat,
   add,
@@ -59,3 +62,6 @@ export const localeUa = {
   format24h: true,
   pluralDay: 'Дні',
 };
+
+export const validateEmail = (value) => isEmail(value);
+export const validateRequired = (value) => !isEmpty(value, { ignore_whitespace: true });

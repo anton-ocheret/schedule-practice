@@ -9,6 +9,5 @@ export default boot(({ app }) => {
     legacy: false,
   });
 
-  // Set i18n instance on app
   app.use(i18n);
 });

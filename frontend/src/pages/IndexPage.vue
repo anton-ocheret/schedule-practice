@@ -296,22 +296,7 @@ export default defineComponent({
       let pretendentDate = getPretendentDate();
       const hasMinutes = minutes || minutes === 0;
       if (hasMinutes) {
-        console.log(hasMinutes, { hours, minutes });
         pretendentDate = getPretendentDate();
-        const startDate = add(
-          new Date(modelDate.value),
-          {
-            hours: modelTimeStartHours.value,
-            minutes: modelTimeStartMinutes.value,
-          },
-        );
-
-        console.log({
-          pretendentDate,
-          startDate,
-        });
-
-        // if (isBefore(pretendentDate, startDate)) return false;
       }
       if (hours < 9 || hours > 20) return false;
 
