@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex flex-center">
+  <q-page class="flex">
     <q-page-container class="full-width q-px-lg">
       <q-form
         ref="formRef"
@@ -119,6 +119,8 @@
       <q-btn
         class="q-mt-lg"
         color="primary"
+        :loading="practices.loading"
+        :disable="!getIsTimeStringValid(timeStart) || !getIsTimeStringValid(timeFinish)"
         @click="addScheduledPractice"
       >
         {{ t('submit-practice-form') }}
@@ -128,8 +130,6 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 import {
   defineComponent,
   ref,
@@ -137,6 +137,7 @@ import {
   watch,
   onMounted,
 } from 'vue';
+import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { allPass } from 'ramda';
 import {
@@ -146,6 +147,7 @@ import {
   isAfter,
   isEqual,
 } from 'date-fns';
+import { usePractices } from 'src/hooks/use-practices';
 import {
   getIsDateStringValid,
   getIsTimeStringValid,
@@ -156,31 +158,27 @@ import {
   getMaxYearMonth,
 } from 'src/utils';
 
+import { routeNames } from 'src/constants';
+
 export default defineComponent({
-  name: 'ScheduleForm',
+  name: routeNames.createSchedule,
 
   setup() {
     const { t } = useI18n();
     const formRef = ref();
+    const {
+      getPractices,
+      practices,
+      create,
+    } = usePractices();
 
-    const scheduled = ref([
-      {
-        from: new Date('Sun Jun 20 2022 15:20:00 GMT+0300 (Eastern European Summer Time)'),
-        to: new Date('Sun Jun 20 2022 17:25:00 GMT+0300 (Eastern European Summer Time)'),
-      },
-      {
-        from: new Date('Sun Jun 20 2022 18:20:00 GMT+0300 (Eastern European Summer Time)'),
-        to: new Date('Sun Jun 20 2022 19:25:00 GMT+0300 (Eastern European Summer Time)'),
-      },
-      {
-        from: new Date('Sun Jun 20 2022 10:20:00 GMT+0300 (Eastern European Summer Time)'),
-        to: new Date('Sun Jun 20 2022 11:25:00 GMT+0300 (Eastern European Summer Time)'),
-      },
-      {
-        from: new Date('Sun Jun 20 2022 11:25:00 GMT+0300 (Eastern European Summer Time)'),
-        to: new Date('Sun Jun 20 2022 11:40:00 GMT+0300 (Eastern European Summer Time)'),
-      },
-    ]);
+    const $router = useRouter();
+
+    const scheduled = computed(() => practices.data);
+
+    onMounted(() => {
+      getPractices();
+    });
 
     const scheduledSorted = computed(
       () => [...scheduled.value].sort((a, b) => a.from - b.from),
@@ -297,10 +295,11 @@ export default defineComponent({
         if (success) {
           const [sh, sm] = timeStart.value.split(':');
           const [fh, fm] = timeFinish.value.split(':');
-          scheduled.value.push({
+
+          create({
             from: add(new Date(date.value), { hours: sh, minutes: sm }),
             to: add(new Date(date.value), { hours: fh, minutes: fm }),
-          });
+          }).then(() => $router.push({ name: routeNames.schedule }));
         }
       });
     }
@@ -318,10 +317,6 @@ export default defineComponent({
         timeFinish.value = '';
       }
     }
-
-    onMounted(() => {
-      axios.get('http://localhost:3000/v1/practices').then((response) => console.log(response));
-    });
 
     return {
       t,
@@ -348,6 +343,8 @@ export default defineComponent({
 
       timeStarthInputDisabled,
       timeFinishInputDisabled,
+
+      practices,
     };
   },
 });

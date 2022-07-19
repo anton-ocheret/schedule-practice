@@ -21,4 +21,13 @@ export default {
   register: 'Зареєструватися',
   name: 'Ім\'я',
   color: 'Колір',
+  'schedule-practice': 'Записатися',
+  monday: 'Понеділок',
+  tuesday: 'Вівторок',
+  wednesday: 'Середа',
+  thursday: 'Четвер',
+  friday: 'П\'ятниця',
+  saturday: 'Субота',
+  sunday: 'Неділя',
+  'color-field-hint': 'Оберіть який небудь темний колір',
 };

@@ -34,6 +34,7 @@
         <q-input
           lazy-rules
           outlined
+          :hint="formTranslations.colorFieldHint"
           v-model="formValues.color"
           :label="formTranslations.color"
           :rules="['anyColor']"

@@ -35,6 +35,7 @@ export function useRegisterForm() {
     register: t('register'),
     requiredError: t('required-error'),
     invalidError: t('invalid-error'),
+    colorFieldHint: t('color-field-hint'),
   });
 
   const getIsRequired = (value) => validateRequired(value) || formTranslations.requiredError;

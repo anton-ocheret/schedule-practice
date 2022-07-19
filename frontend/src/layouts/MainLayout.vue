@@ -3,9 +3,11 @@
     <q-header reveal class="bg-primary text-white">
       <q-toolbar>
         <q-toolbar-title>
-          <q-avatar>
-            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
-          </q-avatar>
+          <router-link :to="{ name: $constants.routeNames.schedule }">
+            <q-avatar>
+              <img class="flex" src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
+            </q-avatar>
+          </router-link>
           App
         </q-toolbar-title>
 

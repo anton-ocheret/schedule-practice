@@ -7,8 +7,12 @@ const catchAsync = require('../utils/catch-async');
 
 const createPractice = catchAsync(async (req, res) => {
   const { from, to } = req.body;
-  const { id: userId } = req.user;
-  const practice = await practicesService.createPractice({ from, to, userId });
+  const { id: user } = req.user;
+  const practice = await practicesService.createPractice({
+    from,
+    to,
+    user,
+  });
   res.status(CREATED).send(practice);
 });
 

@@ -3,16 +3,13 @@ import { routeNames } from 'src/constants';
 const Login = () => import('src/pages/login.vue');
 const Register = () => import('src/pages/register.vue');
 const Schedule = () => import('src/pages/schedule.vue');
+const CreateSchedule = () => import('src/pages/create-schedule.vue');
 
 const routes = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      {
-        path: '',
-        component: () => import('pages/schedule-form.vue'),
-      },
       {
         path: '/login',
         name: routeNames.login,
@@ -33,6 +30,11 @@ const routes = [
         path: '/schedule',
         name: routeNames.schedule,
         component: Schedule,
+      },
+      {
+        path: '/create-schedule',
+        name: routeNames.createSchedule,
+        component: CreateSchedule,
       },
     ],
   },

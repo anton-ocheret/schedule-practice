@@ -4,6 +4,7 @@ export const routeNames = {
   login: 'login',
   register: 'register',
   schedule: 'schedule',
+  createSchedule: 'create-schedule',
 };
 
 export const endpoints = {

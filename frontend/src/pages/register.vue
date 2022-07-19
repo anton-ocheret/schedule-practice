@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flexS">
+  <q-page class="flex">
     <q-page-container class="full-width q-px-lg">
       <register-form />
 

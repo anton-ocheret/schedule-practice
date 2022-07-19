@@ -11,7 +11,7 @@ const practeceSchema = mongoose.Schema({
     type: Date,
     required: true,
   },
-  userId: {
+  user: {
     required: true,
     type: mongoose.SchemaTypes.ObjectId,
     ref: models.user,

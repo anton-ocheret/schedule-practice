@@ -1,6 +1,14 @@
 const { Practice } = require('../../models');
 
-const createPractice = async ({ from, to, userId }) => Practice.create({ from, to, userId });
+const createPractice = async ({
+  from,
+  to,
+  user,
+}) => Practice.create({
+  from,
+  to,
+  user,
+});
 
 const getPractices = async ({ from, to }) => {
   const query = {
@@ -8,7 +16,7 @@ const getPractices = async ({ from, to }) => {
     ...(to) && { to: { $lt: to } },
   };
 
-  return Practice.find(query);
+  return Practice.find(query).populate('user');
 };
 
 module.exports = {

@@ -8,8 +8,8 @@ import {
   isEqual,
 } from 'date-fns';
 
-export function format(date) {
-  return dateFnsFormat(date, 'yyyy/MM/dd');
+export function format(date, frmt = 'yyyy/MM/dd') {
+  return dateFnsFormat(date, frmt);
 }
 
 const getMonday = () => {
