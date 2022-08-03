@@ -13,7 +13,7 @@
 const { configure } = require('quasar/wrappers');
 const path = require('path');
 
-module.exports = configure((/* ctx */) => ({
+module.exports = configure((ctx) => ({
   eslint: {
     // fix: true,
     // include = [],
@@ -56,6 +56,7 @@ module.exports = configure((/* ctx */) => ({
 
   // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#build
   build: {
+    distDir: ctx.mode.pwa ? 'public' : null,
     target: {
       browser: ['es2019', 'edge88', 'firefox78', 'chrome87', 'safari13.1'],
       node: 'node16',
